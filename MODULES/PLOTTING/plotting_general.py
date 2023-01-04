@@ -26,23 +26,15 @@ def rc_setup():
     mpl.rcParams["legend.frameon"] = "False"
 
 
-# TODO: Check type hinting for this (specifically "ax")
-def retr_spec(data: dar.TaurexSolution, ax):
-    """DOC!"""
-    # Paramters for ease of reference
-    wavel = data.bin_solution.wlgrid
-    spec = data.bin_solution.spectrum
-    stddev = data.bin_solution.std
+def obs_spec(data: dar.ObservationData1366, ax: plt.Axes):
+    """Plotting observational data into 'ax' object."""
+    wavel = data.wl
+    spec = data.tr_depth
+    spec_up = data.tr_depth_errpos
+    spec_lo = data.tr_depth_errneg
 
-    ax.plot(wavel, spec, label=data.name_id)
-
-    # TODO: SHADED AREA WORKS, BUT STDDEV IS VERY SMALL
-    ax.fill_between(
-        x=wavel, y1=spec - stddev, y2=spec + stddev,
-        alpha=0.5
+    ax.errorbar(
+        x=wavel, y=spec, yerr=[spec_lo, spec_up],
+        color="grey", marker="d", ms="5", mfc="tab:cyan", ls="",
+        zorder=0, label="Observation"
     )
-
-
-def obs_spec(data: dar.TaurexSolution, ax):
-    """DOC!"""
-    pass

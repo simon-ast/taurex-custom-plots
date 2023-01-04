@@ -10,10 +10,11 @@ TODO: Solution read-in needs
     - Storage of stats data (evidence etc)
 """
 import h5py as h5
+import numpy as np
 
 
 # TODO: Get correct type hinting for return of this function
-def create_taurex_solution(filename: str, name_id: str):
+def create_taurex_solution(filename: str, name_id: str, colour: str):
     """
     Data read in wrapper, which takes the file name (absolute) and
     desired name ID for the solution as arguments. Input must be a
@@ -27,7 +28,8 @@ def create_taurex_solution(filename: str, name_id: str):
     taurex_solution = file_raw["Output"]["Solutions"]["solution0"]
 
     taurex_stored = TaurexSolution(identifier=name_id,
-                                   solution_group=taurex_solution)
+                                   solution_group=taurex_solution,
+                                   colour=colour)
 
     return taurex_stored
 
@@ -39,8 +41,10 @@ class TaurexSolution:
     needs a hdf5-group from the TauREx retrieval file as an input
     ("solution group")
     """
-    def __init__(self, identifier: str, solution_group):
+    def __init__(self, identifier: str, solution_group, colour: str):
+        # TODO: Sort out hdf5 group - type hinting
         self.name_id = identifier
+        self.colour = colour
 
         # Data for the forward model spectrum is stored in the group
         # "Spectra"
@@ -61,6 +65,8 @@ class TaurexSolution:
 
         # TODO: Sort out handling of fit parameters and priors
 
+        # TODO: Sort out handling of observational data
+
 
 class Spectrum:
     # TODO: Get identifier for the hdf5-group "spectrum"
@@ -80,3 +86,18 @@ class Spectrum:
         self.wlwidth = spectrum_group[f"{bin_type}_wlwidth"][()]
         self.wngrid = spectrum_group[f"{bin_type}_wngrid"][()]
         self.wnwidth = spectrum_group[f"{bin_type}_wnwidth"][()]
+
+
+class ObservationData1366:
+    """
+    For now, this is specifically tailored to the spectrum provided with
+    the ERS 1366 data
+    """
+    def __init__(self, filename: str) -> None:
+        # Cut-off first line (column names)
+        data = np.genfromtxt(fname=filename, comments="#")[1:]
+        self.wl = data[:, 0]
+        self.wl_binwidth = data[:, 1]
+        self.tr_depth = data[:, 2]
+        self.tr_depth_errneg = data[:, 3]
+        self.tr_depth_errpos = data[:, 4]
