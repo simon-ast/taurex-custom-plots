@@ -27,8 +27,8 @@ def create_taurex_solution(filename: str, name_id: str, colour: str):
     file_raw = h5.File(filename)
     taurex_solution = file_raw["Output"]["Solutions"]["solution0"]
 
-    taurex_stored = TaurexSolution(identifier=name_id,
-                                   solution_group=taurex_solution,
+    taurex_stored = TaurexSolution(solution_group=taurex_solution,
+                                   identifier=name_id,
                                    colour=colour)
 
     return taurex_stored
@@ -41,7 +41,9 @@ class TaurexSolution:
     needs a hdf5-group from the TauREx retrieval file as an input
     ("solution group")
     """
-    def __init__(self, identifier: str, solution_group, colour: str):
+    def __init__(self, solution_group,
+                 identifier: str = "Solution",
+                 colour: str = "tab:blue"):
         # TODO: Sort out hdf5 group - type hinting
         self.name_id = identifier
         self.colour = colour
@@ -64,8 +66,6 @@ class TaurexSolution:
         contrib = spectrum["Contributions"]
 
         # TODO: Sort out handling of fit parameters and priors
-
-        # TODO: Sort out handling of observational data
 
 
 class Spectrum:

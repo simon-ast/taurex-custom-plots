@@ -18,7 +18,7 @@ def plot_retrieval_spectrum(observation, retrieval_spectra, savename):
     for entry in retrieval_spectra:
         retr_spec(entry, ax)
 
-    plt.legend()
+    plt.legend(fontsize="large")
     plt.tight_layout()
     plt.savefig(f"{PLOT_SAVE_DIR}/{savename}")
 
@@ -39,8 +39,8 @@ def retr_spec(data: dar.TaurexSolution, ax: plt.Axes):
     """Plotting retrieved spectra into 'ax' object."""
     # Parameters for ease of reference
     wavel = data.bin_solution.wlgrid
-    spec = data.bin_solution.spectrum
-    stddev = data.bin_solution.std
+    spec = data.bin_solution.spectrum * 100
+    stddev = data.bin_solution.std * 100
     colour = data.colour
 
     ax.plot(wavel, spec, lw=2, label=data.name_id, c=colour)

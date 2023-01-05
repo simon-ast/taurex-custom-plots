@@ -1,8 +1,9 @@
-import matplotlib.pyplot as plt
+import numpy as np
 
 import MODULES.DATA.data_readin as dar
 import MODULES.PLOTTING.plotting_general as pg
 import MODULES.PLOTTING.retrieval_spectra as rs
+import MODULES.STATISTICS.bayesian as bay
 
 # GLOBALS
 PLOT_SAVE_DIR = "PLOTS"
@@ -34,6 +35,8 @@ def main():
         retrieval_spectra=sols,
         savename="acechem_retrieval_spectra.pdf"
     )
+
+    bay.bayes_factor_display(sols)
 
 
 if __name__ == "__main__":
