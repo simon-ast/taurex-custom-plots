@@ -101,3 +101,17 @@ class ObservationData1366:
         self.tr_depth = data[:, 2]
         self.tr_depth_errneg = data[:, 3]
         self.tr_depth_errpos = data[:, 4]
+
+
+class ObservationDataEureka:
+    """
+    For now, this is specifically tailored to the spectrum used with the
+    """
+    def __init__(self, filename: str) -> None:
+        # Cut-off first line (column names)
+        data = np.genfromtxt(fname=filename, comments="#")[1:]
+        self.wl = data[:, 0]
+        #self.wl_binwidth = data[:, 1]
+        self.tr_depth = data[:, 1]
+        self.tr_depth_errneg = data[:, 2]
+        self.tr_depth_errpos = data[:, 2]

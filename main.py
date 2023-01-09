@@ -12,28 +12,34 @@ DATA_DIR = "DATA"
 
 def main():
 
-    observation = dar.ObservationData1366(
-        filename=f"{DATA_DIR}/ERS1366_wasp39b_spectrum.txt"
+    observation = dar.ObservationDataEureka(
+        filename=f"{DATA_DIR}/eureka_wasp39b_spectrum.dat"
     )
 
     nocloud = dar.create_taurex_solution(
-        filename=f"{DATA_DIR}/nocloud.hdf5",
+        filename=f"{DATA_DIR}/eureka_wasp39b.hdf5",
         name_id="No Clouds",
         colour="tab:blue"
     )
 
-    simcloud = dar.create_taurex_solution(
-        filename=f"{DATA_DIR}/simplecloud.hdf5",
-        name_id="Fully opaque \n ($P_\\mathrm{top} \\approx 0.01$ mbar)",
+    wasp39b = dar.create_taurex_solution(
+        filename=f"{DATA_DIR}/eureka_wasp39b_noclouds.hdf5",
+        name_id="Fully opaque",
         colour="tab:orange"
     )
 
-    sols = [nocloud, simcloud]
+    noco2 = dar.create_taurex_solution(
+        filename=f"{DATA_DIR}/eureka_wasp39b_noCO2.hdf5",
+        name_id="no CO2",
+        colour="tab:green"
+    )
+
+    sols = [noco2, nocloud, wasp39b]
 
     rs.plot_retrieval_spectrum(
         observation=observation,
         retrieval_spectra=sols,
-        savename="acechem_retrieval_spectra.pdf"
+        savename="eureka_retrieval_spectra.pdf"
     )
 
     bay.bayes_factor_display(sols)
