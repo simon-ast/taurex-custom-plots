@@ -18,9 +18,9 @@ def plot_retrieval_spectrum(observation, retrieval_spectra, savename):
     for entry in retrieval_spectra:
         retr_spec(entry, ax)
 
-    plt.legend(fontsize="large")
+    plt.legend(fontsize="large", loc="lower left")
     plt.tight_layout()
-    plt.savefig(f"{PLOT_SAVE_DIR}/{savename}")
+    plt.savefig(f"{PLOT_SAVE_DIR}/{savename}", dpi=600)
 
 
 def setup_retr_spec():

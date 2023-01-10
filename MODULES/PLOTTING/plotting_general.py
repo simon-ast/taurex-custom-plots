@@ -36,6 +36,6 @@ def obs_spec(data: dar.ObservationData1366, ax: plt.Axes):
 
     ax.errorbar(
         x=wavel, y=spec, yerr=[spec_lo, spec_up],
-        color="grey", marker="d", ms="5", mfc="tab:cyan", ls="",
+        color="darkgrey", marker="d", ms="5", mfc="skyblue", ls="",
         zorder=0, label="Observation"
     )

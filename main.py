@@ -1,5 +1,3 @@
-import numpy as np
-
 import MODULES.DATA.data_readin as dar
 import MODULES.PLOTTING.plotting_general as pg
 import MODULES.PLOTTING.retrieval_spectra as rs
@@ -8,6 +6,7 @@ import MODULES.STATISTICS.bayesian as bay
 # GLOBALS
 PLOT_SAVE_DIR = "PLOTS"
 DATA_DIR = "DATA"
+PLOT_TYPE = "png"
 
 
 def main():
@@ -16,15 +15,15 @@ def main():
         filename=f"{DATA_DIR}/eureka_wasp39b_spectrum.dat"
     )
 
-    nocloud = dar.create_taurex_solution(
-        filename=f"{DATA_DIR}/eureka_wasp39b.hdf5",
-        name_id="No Clouds",
+    wasp39b = dar.create_taurex_solution(
+        filename=f"{DATA_DIR}/eureka_wasp39b_noclouds.hdf5",
+        name_id="Reference",
         colour="tab:blue"
     )
 
-    wasp39b = dar.create_taurex_solution(
-        filename=f"{DATA_DIR}/eureka_wasp39b_noclouds.hdf5",
-        name_id="Fully opaque",
+    nocloud = dar.create_taurex_solution(
+        filename=f"{DATA_DIR}/eureka_wasp39b.hdf5",
+        name_id="No Cloud",
         colour="tab:orange"
     )
 
@@ -34,15 +33,34 @@ def main():
         colour="tab:green"
     )
 
-    sols = [noco2, nocloud, wasp39b]
-
-    rs.plot_retrieval_spectrum(
-        observation=observation,
-        retrieval_spectra=sols,
-        savename="eureka_retrieval_spectra.pdf"
+    noch4 = dar.create_taurex_solution(
+        filename=f"{DATA_DIR}/eureka_wasp39b_noCH4.hdf5",
+        name_id="no CH4",
+        colour="tab:purple"
     )
 
-    bay.bayes_factor_display(sols)
+    """
+    sols = [wasp39b, nocloud, noch4, noco2]
+    rs.plot_retrieval_spectrum(
+        observation=observation,
+        retrieval_spectra=sols2,
+        savename="eureka_retrieval_spectra2.pdf"
+    )
+    """
+    sols_talk = [
+        [], [wasp39b], [wasp39b, nocloud],
+        [wasp39b, nocloud, noch4, noco2]
+    ]
+    names_talk = ["empty", "reference", "nocloud", "nomols"]
+
+    for i in range(len(sols_talk)):
+        rs.plot_retrieval_spectrum(
+            observation=observation,
+            retrieval_spectra=sols_talk[i],
+            savename=f"eureka_retrieval_{names_talk[i]}.{PLOT_TYPE}"
+        )
+
+    bay.bayes_analysis(sols_talk[-1])
 
 
 if __name__ == "__main__":
