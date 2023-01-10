@@ -21,9 +21,9 @@ def main():
         colour="tab:blue"
     )
 
-    nocloud = dar.create_taurex_solution(
+    cloud = dar.create_taurex_solution(
         filename=f"{DATA_DIR}/eureka_wasp39b.hdf5",
-        name_id="No Cloud",
+        name_id="Clouds",
         colour="tab:orange"
     )
 
@@ -39,6 +39,11 @@ def main():
         colour="tab:purple"
     )
 
+    noh2o = dar.create_taurex_solution(
+        filename=f"{DATA_DIR}/eureka_wasp39b_noH2O.hdf5",
+        name_id="no H2O",
+        colour="black"
+    )
     """
     sols = [wasp39b, nocloud, noch4, noco2]
     rs.plot_retrieval_spectrum(
@@ -48,10 +53,10 @@ def main():
     )
     """
     sols_talk = [
-        [], [wasp39b], [wasp39b, nocloud],
-        [wasp39b, nocloud, noch4, noco2]
+        [], [wasp39b], [wasp39b, cloud],
+        [wasp39b, cloud, noch4, noco2, noh2o]
     ]
-    names_talk = ["empty", "reference", "nocloud", "nomols"]
+    names_talk = ["empty", "reference", "cloud", "nomols"]
 
     for i in range(len(sols_talk)):
         rs.plot_retrieval_spectrum(
